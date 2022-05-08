@@ -1,5 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -7,13 +10,17 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     clean: true
   },
-  mode: 'development',
+  // mode: 'development',
+  mode: 'production',
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
       filename: 'app.html',
       inject: 'body'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles/[contenthash].css'
     })
   ],
   devServer: {
@@ -44,7 +51,17 @@ module.exports = {
             maxSize: 4 * 1024 * 1024
           }
         }
-      }
+      },
+      {
+        test: /\.(css|less)$/,
+        // use: ['style-loader', 'css-loader', 'less-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+      },
+    ]
+  },
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin()
     ]
   }
 }
