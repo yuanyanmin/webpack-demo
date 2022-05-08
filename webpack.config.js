@@ -8,7 +8,7 @@ module.exports = {
     clean: true
   },
   mode: 'development',
-  // devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
@@ -18,5 +18,33 @@ module.exports = {
   ],
   devServer: {
     static: './dist',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.png$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[contenthash][ext]'
+        }
+      },
+      {
+        test: /\.svg$/,
+        type: 'asset/inline'
+      },
+      {
+        test: /\.txt$/,
+        type: 'asset/source'
+      },
+      {
+        test: /\.jpg$/,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024 * 1024
+          }
+        }
+      }
+    ]
   }
 }
