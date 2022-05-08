@@ -68,3 +68,14 @@ devServer: {
 
 npx webpack-dev-server
 ```
+
+### 资源模块
+
+```
+loader：
+
+asset/resource 发送一个单独的文件并导出 URL。 
+asset/inline 导出一个资源的 data URI。 
+asset/source 导出资源的源代码。
+asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。
+```
