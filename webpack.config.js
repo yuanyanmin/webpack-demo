@@ -4,9 +4,23 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.js',
+  // entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    another: './src/another-module.js'
+    // index: {
+    //   import: './src/index.js',
+    //   dependOn: 'shared'
+    // },
+    // another: {
+    //   import: './src/another-module.js',
+    //   dependOn: 'shared'
+    // },
+    // shared: 'lodash'
+  },
   output: {
-    filename: 'bundle.js',
+    // filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, './dist'),
     clean: true
   },
@@ -57,11 +71,29 @@ module.exports = {
         // use: ['style-loader', 'css-loader', 'less-loader']
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
       },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: [
+              [
+                '@babel/plugin-transform-runtime'
+              ]
+            ]
+          }
+        }
+      }
     ]
   },
   optimization: {
     minimizer: [
       new CssMinimizerPlugin()
-    ]
+    ],
+    splitChunks: {
+      chunks: 'all'
+    }
   }
 }

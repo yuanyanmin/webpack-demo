@@ -5,6 +5,8 @@ import exampleTxt from './assets/example.txt'
 import jpgMap from './assets/qianfeng-sem.jpg'
 import './style.css'
 import './style.less'
+import './async-module'
+import _ from 'lodash'
 
 hello()
 
@@ -28,3 +30,17 @@ img3.src = jpgMap
 document.body.appendChild(img3)
 
 document.body.classList.add('hello')
+
+
+console.log(_.join(['index', 'module', 'loaded']), ' ');
+
+const button = document.createElement('button')
+button.textContent = '加法'
+button.addEventListener('click', () => {
+    // webpackPreload
+    import(/*webpackChunkName: 'math', webpackPrefetch: true*/'./math.js').then(({add}) => {
+        console.log(add(4,5))
+    })
+})
+
+document.body.appendChild(button)
