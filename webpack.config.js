@@ -20,9 +20,11 @@ module.exports = {
   },
   output: {
     // filename: 'bundle.js',
-    filename: '[name].bundle.js',
+    // filename: '[name].bundle.js',
+    filename: 'scripts/[name].[contenthash].js',
     path: path.resolve(__dirname, './dist'),
-    clean: true
+    clean: true,
+    
   },
   // mode: 'development',
   mode: 'production',
@@ -93,7 +95,14 @@ module.exports = {
       new CssMinimizerPlugin()
     ],
     splitChunks: {
-      chunks: 'all'
+      // chunks: 'all'
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
     }
   }
 }
