@@ -8,8 +8,14 @@ module.exports = {
     // mode: 'production',
     mode: 'development',
     entry: {
-        app: './src/app.js',
-        app2: './src/app2.js',
+        app: {
+            import: './src/app.js',
+            filename: 'chanel1/[name].js'
+        },
+        app2: {
+            import: './src/app2.js',
+            filename: 'chanel2/[name].js'
+        },
         app3: './src/app3.ts'
     },
     output: {
@@ -54,7 +60,20 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html'
+            template: './index.html',
+            inject: 'body',
+            title: '自定义title',
+            filename: 'chanel1/index.html',
+            chunks: ['app'],
+            publicPath: 'http://www.a.com'
+        }),
+        new HtmlWebpackPlugin({
+            template: './index2.html',
+            inject: 'body',
+            title: '自定义title',
+            filename: 'chanel2/index2.html',
+            chunks: ['app2'],
+            publicPath: 'http://www.b.com'
         }),
         new EslintWebpackPlugin(),
         // new BundleAnalyzerPlugin()
