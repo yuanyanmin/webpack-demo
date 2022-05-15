@@ -1,16 +1,23 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const EslintWebpackPlugin = require('eslint-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+
 const path = require('path')
 
 module.exports = {
     // mode: 'production',
     mode: 'development',
-    entry: './app.js',
+    entry: {
+        app: './src/app.js',
+        app2: './src/app2.js',
+        app3: './src/app3.ts'
+    },
     output: {
         publicPath: '/',
         clean: true
     },
     // devtool: 'cheap-source-map',
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -25,8 +32,23 @@ module.exports = {
                 }
             },
             {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: 'ts-loader'
+            },
+            {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                // use: ['style-loader', 'css-loader', 'postcss-loader']
+                use: [
+                    'style-loader', 
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true
+                        }
+                    },
+                    'postcss-loader'
+                ]
             }
         ]
     },
@@ -34,8 +56,16 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './index.html'
         }),
-        new EslintWebpackPlugin()
+        new EslintWebpackPlugin(),
+        // new BundleAnalyzerPlugin()
     ],
+    externalsType: 'script',
+    externals: {
+        jQuery: [
+            'https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js',
+            '$'
+        ]
+    },
     devServer: {
         client: {
             overlay: false
@@ -58,5 +88,8 @@ module.exports = {
         // https: true
         // http2: true
         historyApiFallback: true
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
     }
 }

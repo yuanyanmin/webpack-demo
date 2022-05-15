@@ -3,4 +3,5 @@
     height: 60px;
     background-color: green;
     margin-bottom: 10px;
+    display: flex;
 }
