@@ -53,3 +53,16 @@ worker.postMessage({
 worker.onmessage = (message) => {
     console.log(message.data.answer);
 }
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+            console.log('注册成功', registration);
+        }).catch(err => {
+            console.log('注册失败', err);
+        })
+    })
+}
+
+console.log(_.join(['hello', 'word'], ','));

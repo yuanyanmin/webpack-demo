@@ -1,8 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const EslintWebpackPlugin = require('eslint-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const WorkboxPlugin = require('workbox-webpack-plugin')
 
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
     // mode: 'production',
@@ -58,6 +60,13 @@ module.exports = {
         }),
         new EslintWebpackPlugin(),
         // new BundleAnalyzerPlugin()
+        // new WorkboxPlugin.GenerateSW({
+        //     clientsClaim: true,
+        //     skipWaiting: true
+        // }),
+        new webpack.ProvidePlugin({
+            _: 'lodash'
+        })
     ],
     externalsType: 'script',
     externals: {
